@@ -369,12 +369,6 @@ install_magento ()
       exit 1
    fi
 
-   if [ ! -d "$magento_dir" ]
-   then
-      echo "${MAGECIF[2]}Creating Magento directory: $magento_dir ...${MAGECIF[0]}"
-      mkdir -p "$magento_dir"
-   fi
- 
    if [[ ! $version =~ ^[a-z0-9.\-]+$ ]]
    then 
       echo "${MAGECIF[3]}Version should be specified: $version${MAGECIF[0]}"
@@ -451,11 +445,12 @@ install_magento ()
 
    if [[ $no_download == "0" ]] 
    then
-       echo "${MAGECIF[2]}Downloading Magento from URL: http://www.magentocommerce.com/downloads/assets/$version/magento-$version.tar.gz${MAGECIF[0]}"
-       wget -q --no-clobber -P $download_dir http://www.magentocommerce.com/downloads/assets/$version/magento-$version.tar.gz
+       echo "${MAGECIF[2]}Downloading Magento from URL: https://github.com/OpenMage/magento-mirror/archive/$version.zip${MAGECIF[0]}"
+       wget -q --no-clobber -P $download_dir https://github.com/OpenMage/magento-mirror/archive/$version.zip
        check_error_exit;
        echo "${MAGECIF[2]}Unpacking magento installment...${MAGECIF[0]}"
-       tar -zxf $download_dir/magento-$version.tar.gz -C $magento_dir --strip=1 magento
+       unzip -qq $download_dir/$version.zip
+       mv magento-mirror-$version $magento_dir
        # Special case for PHP5.4 with installation process
        echo "${MAGECIF[2]}Applying pdo_mysql check fix...${MAGECIF[0]}"
        config_file="${magento_dir}/app/code/core/Mage/Install/etc/config.xml"
