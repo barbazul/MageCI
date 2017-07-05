@@ -450,6 +450,7 @@ install_magento ()
        check_error_exit;
        echo "${MAGECIF[2]}Unpacking magento installment...${MAGECIF[0]}"
        unzip -qq $download_dir/$version.zip
+       mkdir -p $(dirname $magento_dir)
        mv magento-mirror-$version $magento_dir
        # Special case for PHP5.4 with installation process
        echo "${MAGECIF[2]}Applying pdo_mysql check fix...${MAGECIF[0]}"
